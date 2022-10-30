@@ -35,7 +35,7 @@ if (res2.ok) {
 }
 var stockArray = scanData.stocks.split(",");
 var scanName = scanData.scan_name;
-var testMessage  = "<br>"+scanName+"</b>\n";
+var testMessage  = "<b>"+scanName+"</b>\n";
 
 for (const item of stockArray) {
   testMessage += item+"\n";
@@ -56,7 +56,7 @@ if (response.ok) {
   console.log("response from telegram send");
   console.log(data);
 } else {
-  console.log(" error send data");
+  console.log(" error send data"+response.error);
 }
   res.end();
 })
