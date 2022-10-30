@@ -42,7 +42,7 @@ console.log(stockArray);
 console.log(scanName);
 
 for (const item of stockArray) {
-  testMessage.concat(item).concat("/n");
+  testMessage += item+"/n";
 }
 console.log(testMessage);
 const tgbody = {
