@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const db = require('cyclic-dynamodb')
 const fetch = require('node-fetch');
-const https = require('https');
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -85,6 +84,17 @@ app.post('/shootingstar', async (req, res) => {
      dbData.shooting = inDB;
     } 
   }
+  res.end();
+})
+
+app.get('/memorydata', async (req, res) => {
+  
+  res.json(dbData).end();
+})
+
+app.get('/cleardata', async (req, res) => {
+  dbData.shooting = [];
+  dbData.hammer = [];
   res.end();
 })
 
