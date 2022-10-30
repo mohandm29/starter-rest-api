@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }))
 // app.use(express.static('public', options))
 // #############################################################################
 
-app.get('/hammer-green', async (req, res) => {
+app.post('/hammer-green', async (req, res) => {
 
   console.log(req.body);
   const scanData = req.body;
