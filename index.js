@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const db = require('cyclic-dynamodb')
 const fetch = require('node-fetch');
+const https = require('https');
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
