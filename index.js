@@ -27,6 +27,31 @@ app.get('/hello', async (req, res) => {
 
 app.post('/hammer-green', async (req, res) => {
   console.log(req.body)
+
+
+  let request = https.get('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates', (res) => {
+    if (res.statusCode !== 200) {
+      console.error(`Did not get an OK from the server. Code: ${res.statusCode}`);
+      res.resume();
+      return;
+    }
+    let data = '';
+
+    res.on('data', (chunk) => {
+      data += chunk;
+    });
+  
+    res.on('close', () => {
+      console.log('Retrieved all data');
+      console.log(JSON.parse(data));
+    });
+
+   });
+
+   request.on('error', (err) => {
+    console.error(`Encountered an error trying to make a request: ${err.message}`);
+  });
+
   const tgbody = {
 	'text':'<b>bold</b>',
 	'chat_id':'1081447817',
@@ -41,7 +66,7 @@ app.post('/hammer-green', async (req, res) => {
 }
 fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/sendMessage', requestOptions)
     .then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => console.log("done fetch"+data))
     .catch (err => console.log(err))
   
   res.json(req.body).end()
@@ -59,15 +84,6 @@ app.post('/:col/:key', async (req, res) => {
   res.json(item).end()
 })
 
-// Delete an item
-app.delete('/:col/:key', async (req, res) => {
-  const col = req.params.col
-  const key = req.params.key
-  console.log(`from collection: ${col} delete key: ${key} with params ${JSON.stringify(req.params)}`)
-  const item = await db.collection(col).delete(key)
-  console.log(JSON.stringify(item, null, 2))
-  res.json(item).end()
-})
 
 // Get a single item
 app.get('/:col/:key', async (req, res) => {
