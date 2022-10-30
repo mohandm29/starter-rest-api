@@ -23,14 +23,6 @@ app.use(express.urlencoded({ extended: true }))
 
 app.get('/hello', async (req, res) => {
   const a = {'a':'b'}
-  const res1 = await fetch('https://nodejs.org/api/documentation.json');
-if (res1.ok) {
-  const data = await res1.json();
-  console.log("response from node fetch");
-  console.log(data);
-}else{
-  console.log("error data");
-}
 
 const res2 = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates');
 if (res2.ok) {
@@ -41,6 +33,23 @@ if (res2.ok) {
   console.log(" error t data");
 }
 
+const tgbody = {
+	'text':'<b>bold</b>',
+	'chat_id':'1081447817',
+	'parse_mode': 'HTML'
+}
+const response = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/sendMessage', {
+	method: 'post',
+	body: JSON.stringify(tgbody),
+	headers: {'Content-Type': 'application/json'}
+});
+if (response.ok) {
+  const data = await response.json();
+  console.log("response from telegram send");
+  console.log(data);
+} else {
+  console.log(" error send data");
+}
   res.json(a).end()
 })
 
