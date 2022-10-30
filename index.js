@@ -35,7 +35,7 @@ app.post('/hammer-green', async (req, res) => {
     var scanName = scanData.scan_name;
     var testMessage  = "<b>"+scanName+"</b>\n";
   
-    let inDB = await db.collection('stocks').get("hammer");
+    let inDB = await db.collection('coffee-nightingale-gownCyclicDB').get("hammer");
     console.log(inDB);
     for (const item of stockArray) {
       if(inDB.indexOf(item) != -1) {
@@ -43,7 +43,7 @@ app.post('/hammer-green', async (req, res) => {
         inDB.push(item);
       }
     }
-    await db.collection('hammer-green').set("hammer",inDB);
+    await db.collection('coffee-nightingale-gownCyclicDB').set("hammer",inDB);
     const tgbody = {
       'text':testMessage,
       'chat_id':chatId,
@@ -103,8 +103,7 @@ app.get('/:col/:key', async (req, res) => {
 
 // Get a full listing
 app.get('/createDb', async (req, res) => {
-  
-  const items = await db.collection("stocks").set("hammer",[])
+  const items = await db.collection("coffee-nightingale-gownCyclicDB").set("hammer",[])
   console.log(JSON.stringify(items, null, 2))
   res.json(items).end()
 })
