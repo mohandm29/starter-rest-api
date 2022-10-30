@@ -103,8 +103,7 @@ app.get('/:col/:key', async (req, res) => {
 
 // Get a full listing
 app.get('/createDb', async (req, res) => {
-  const col = req.params.col
-  console.log(`list collection: ${col} with params: ${JSON.stringify(req.params)}`)
+  
   const items = await db.collection("stocks").set("hammer",[])
   console.log(JSON.stringify(items, null, 2))
   res.json(items).end()
