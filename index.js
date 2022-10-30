@@ -41,7 +41,7 @@ app.post('/hammer-green', async (req, res) => {
 }
 fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/sendMessage', requestOptions)
     .then(response => response.json())
-    .then(data => console.log(data))
+     .then(data => console.log("done fetch"+data))
     .catch (err => console.log(err))
   
   res.json(req.body).end()
