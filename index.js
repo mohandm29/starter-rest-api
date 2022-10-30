@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const db = require('cyclic-dynamodb')
+const https = require('https');
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -26,6 +27,22 @@ app.get('/hello', async (req, res) => {
 
 app.post('/hammer-green', async (req, res) => {
   console.log(req.body)
+  const tgbody = {
+	'text':'<b>bold</b>',
+	'chat_id':'1081447817',
+	'parse_mode': 'HTML'
+}
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(tgbody)
+}
+fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/sendMessage', requestOptions)
+    .then(response => response.json())
+    .then(data => console.log(data))
+  
   res.json(req.body).end()
 })
 
