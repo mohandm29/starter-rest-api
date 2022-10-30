@@ -30,9 +30,9 @@ app.post('/hammer-green', async (req, res) => {
   console.log(req.body)
 
 
-  const res = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates');
-if (res.ok) {
-  const data = await res.json();
+  const gres = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates');
+if (gres.ok) {
+  const data = await gres.json();
   console.log(data);
 }
 
