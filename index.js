@@ -25,8 +25,9 @@ const botURL = 'https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfC
 //Mohan
 // const chatId = '1081447817'; 
 //Vinay
-const chatId = '841550544';
-
+//const chatId = '841550544';
+//group  = -763158766
+const chatId = process.env.chatId;
 const dbData = {'shooting' : [], 'hammer': []};  
 
 app.post('/hammer-green', async (req, res) => {
