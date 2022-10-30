@@ -30,7 +30,7 @@ app.post('/hammer-green', async (req, res) => {
   console.log(req.body)
 
 
-  let request = https.get('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates', (res) => {
+  let request = await https.get('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates', (res) => {
     if (res.statusCode !== 200) {
       console.error(`Did not get an OK from the server. Code: ${res.statusCode}`);
       res.resume();
@@ -49,9 +49,9 @@ app.post('/hammer-green', async (req, res) => {
 
    });
 
-   request.on('error', (err) => {
-    console.error(`Encountered an error trying to make a request: ${err.message}`);
   });
+  request.on('error', (err) => {
+    console.error(`Encountered an error trying to make a request: ${err.message}`);
 
   const tgbody = {
 	'text':'<b>bold</b>',
