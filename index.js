@@ -21,98 +21,61 @@ app.use(express.urlencoded({ extended: true }))
 // app.use(express.static('public', options))
 // #############################################################################
 
+const botURL = 'https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI';
+const chatId = '1081447817';
+
 app.post('/hammer-green', async (req, res) => {
 
   const scanData = req.body;
 
-const res2 = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates');
-if (res2.ok) {
-  const data = await res2.json();
-  console.log("response from telegram fetch");
-  console.log(data);
-}else{
-  console.log(" error t data");
-}
-var stockArray = scanData.stocks.split(",");
-var scanName = scanData.scan_name;
-var testMessage  = "<b>"+scanName+"</b>\n";
+  var update = await getUpdate();
 
-for (const item of stockArray) {
-  testMessage += item+"\n";
-}
-const tgbody = {
-	'text':testMessage,
-	'chat_id':'1081447817',
-	'parse_mode': 'HTML'
-}
-console.log(testMessage);
-const response = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/sendMessage', {
-	method: 'post',
-	body: JSON.stringify(tgbody),
-	headers: {'Content-Type': 'application/json'}
-});
-if (response.ok) {
-  const data = await response.json();
-  console.log("response from telegram send");
-  console.log(data);
-} else {
-  console.log(" error send data"+response.error);
-}
+  var stockArray = scanData.stocks.split(",");
+  if(stockArray && stockArray.length > 0 ){
+    var scanName = scanData.scan_name;
+    var testMessage  = "<b>"+scanName+"</b>\n";
+  
+    let inDB = await db.collection('hammer-green').list();
+    
+    for (const item of stockArray) {
+      if(inDB.indexOf(item) != -1) {
+        testMessage += item+"\n";
+        await db.collection('hammer-green').set(item,"");
+      }
+    }
+    const tgbody = {
+      'text':testMessage,
+      'chat_id':chatId,
+      'parse_mode': 'HTML'
+    }
+    console.log(testMessage);
+    const response = await fetch(botURL+'/sendMessage', {
+      method: 'post',
+      body: JSON.stringify(tgbody),
+      headers: {'Content-Type': 'application/json'}
+    });
+    if (response.ok) {
+      const data = await response.json();
+      console.log("response from telegram send");
+      console.log(data);
+    } else {
+      console.log(" error send data"+response.error);
+    }
+  }
   res.end();
 })
 
-app.post('/hammer-green1', async (req, res) => {
-  console.log(req.body);
-
-
-  const gres = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates');
-if (gres.ok) {
-  const data = await gres.json();
-  console.log(data);
-}
-
-  let request =  https.get('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates', (res) => {
-    if (res.statusCode !== 200) {
-      console.error(`Did not get an OK from the server. Code: ${res.statusCode}`);
-      res.resume();
-      return;
+async function getUpdate() {
+  const res2 = await fetch(botURL+'/getUpdates');
+    if (res2.ok) {
+      const data = await res2.json();
+      console.log("response from telegram fetch");
+      console.log(data);
+    }else{
+      console.log(" error t data");
     }
-    let data = '';
-
-    res.on('data', (chunk) => {
-      data += chunk;
-    });
-  
-    res.on('close', () => {
-      console.log('Retrieved all data');
-      console.log(JSON.parse(data));
-    });
-
-   });
-   request.on('error', (err) => {
-    console.error(`Encountered an error trying to make a request: ${err.message}`);
-  });
-  
-
-  const tgbody = {
-	'text':'<b>bold</b>',
-	'chat_id':'1081447817',
-	'parse_mode': 'HTML'
-};
-  const requestOptions = {
-    method: 'POST',
-    headers: { 
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(tgbody)
-};
-fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/sendMessage', requestOptions)
-    .then(response => response.json())
-    .then(data => console.log("done fetch"+data))
-    .catch (err => console.log(err));
-  
-  res.json(req.body).end()
-});
+    return data;
+}
 
 // Create or Update an item
 app.post('/:col/:key', async (req, res) => {
