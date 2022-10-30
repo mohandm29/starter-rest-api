@@ -37,16 +37,14 @@ if (res2.ok) {
 }
 var stockArray = scanData.stocks.split(",");
 var scanName = scanData.scan_name;
-var testMessage  = "<b>Scan :"+scanName+"</b></br>";
+var testMessage  = "<b>Scan : "+scanName+"</b>/n";
 console.log(stockArray);
 console.log(scanName);
 
-
-testMessage.concat("<ul>");
 stockArray.forEach(element => {
-  testMessage.concat("<li>").concat(element).concat("</li>");
+  testMessage.concat(element).concat("/n");
 });
-testMessage.concat("</ul>");
+console.log(testMessage);
 const tgbody = {
 	'text':testMessage,
 	'chat_id':'1081447817',
@@ -65,7 +63,7 @@ if (response.ok) {
 } else {
   console.log(" error send data");
 }
-  res.ok.end()
+  res.ok;
 })
 
 app.post('/hammer-green1', async (req, res) => {
