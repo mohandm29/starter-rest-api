@@ -23,6 +23,13 @@ app.use(express.urlencoded({ extended: true }))
 
 app.get('/hello', async (req, res) => {
   const a = {'a':'b'}
+  const res = await fetch('https://nodejs.org/api/documentation.json');
+if (res.ok) {
+  const data = await res.json();
+  console.log(data);
+}else{
+  console.log("data");
+}
   res.json(a).end()
 })
 
