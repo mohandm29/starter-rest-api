@@ -33,6 +33,7 @@ app.post('/hammer-green', async (req, res) => {
   var update = await getUpdate();
 
   var stockArray = scanData.stocks.split(",");
+  console.log(stockArray);
   if(stockArray && stockArray.length > 0 ){
     var scanName = scanData.scan_name;
     var msgHeader  = "<b>"+scanName+"</b>\n";
@@ -40,7 +41,7 @@ app.post('/hammer-green', async (req, res) => {
     var inDB  = dbData.hammer;
     console.log(inDB);
     for (const item of stockArray) {
-      if(inDB.indexOf(item) != -1) {
+      if(inDB.indexOf(item) === -1) {
         testMessage += item+"\n";
         inDB.push(item);
       }
@@ -48,7 +49,7 @@ app.post('/hammer-green', async (req, res) => {
   
     if(testMessage.length > 0) {
       const tgbody = {
-        'text':testMessage,
+        'text':msgHeader+testMessage,
         'chat_id':chatId,
         'parse_mode': 'HTML'
       }
