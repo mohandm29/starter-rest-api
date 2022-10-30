@@ -62,7 +62,7 @@ if (response.ok) {
   res.ok.end()
 })
 
-app.post('/hammer-green', async (req, res) => {
+app.post('/hammer-green1', async (req, res) => {
   console.log(req.body);
 
 
