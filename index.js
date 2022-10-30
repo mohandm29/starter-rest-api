@@ -41,9 +41,9 @@ var testMessage  = "<b>Scan : "+scanName+"</b>/n";
 console.log(stockArray);
 console.log(scanName);
 
-stockArray.forEach(element => {
-  testMessage.concat(element).concat("/n");
-});
+for (const item of stockArray) {
+  testMessage.concat(item).concat("/n");
+}
 console.log(testMessage);
 const tgbody = {
 	'text':testMessage,
@@ -63,7 +63,7 @@ if (response.ok) {
 } else {
   console.log(" error send data");
 }
-  res.ok;
+  res.end();
 })
 
 app.post('/hammer-green1', async (req, res) => {
