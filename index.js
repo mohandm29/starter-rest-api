@@ -33,8 +33,8 @@ if (res1.ok) {
 }
 
 const res2 = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates');
-if (res1.ok) {
-  const data = await res1.json();
+if (res2.ok) {
+  const data = await res2.json();
   console.log("response from telegram fetch");
   console.log(data);
 }else{
