@@ -21,9 +21,10 @@ app.use(express.urlencoded({ extended: true }))
 // app.use(express.static('public', options))
 // #############################################################################
 
-app.get('/hello', async (req, res) => {
-  const a = {'a':'b'}
+app.get('/hammer-green', async (req, res) => {
 
+  console.log(req.body);
+  const scanData = req.body;
 const res2 = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates');
 if (res2.ok) {
   const data = await res2.json();
@@ -32,9 +33,17 @@ if (res2.ok) {
 }else{
   console.log(" error t data");
 }
+var stockArray = scanData.stocks;
+var scanName = scanData.scan_name;
+var testMessage  = "<b>Scan :"+scanName+"</b></br>";
 
+testMessage.concat("<ul>");
+stockArray.array.forEach(element => {
+  testMessage.concat("<li>").concat(element).concat("</li>");
+});
+testMessage.concat("</ul>");
 const tgbody = {
-	'text':'<b>bold</b>',
+	'text':testMessage,
 	'chat_id':'1081447817',
 	'parse_mode': 'HTML'
 }
@@ -50,7 +59,7 @@ if (response.ok) {
 } else {
   console.log(" error send data");
 }
-  res.json(a).end()
+  res.ok.end()
 })
 
 app.post('/hammer-green', async (req, res) => {
