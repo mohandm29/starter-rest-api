@@ -23,10 +23,8 @@ app.use(express.urlencoded({ extended: true }))
 
 app.post('/hammer-green', async (req, res) => {
 
-  console.log(typeof req.body);
   const scanData = req.body;
 
-  console.log(typeof scanData.stocks);
 const res2 = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates');
 if (res2.ok) {
   const data = await res2.json();
@@ -37,14 +35,11 @@ if (res2.ok) {
 }
 var stockArray = scanData.stocks.split(",");
 var scanName = scanData.scan_name;
-var testMessage  = "<b>Scan : "+scanName+"</b>/n";
-console.log(stockArray);
-console.log(scanName);
+var testMessage  = "<br>"+scanName+"</b>\n";
 
 for (const item of stockArray) {
-  testMessage += item+"/n";
+  testMessage += item+"\n";
 }
-console.log(testMessage);
 const tgbody = {
 	'text':testMessage,
 	'chat_id':'1081447817',
