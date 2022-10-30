@@ -24,6 +24,11 @@ app.get('/hello', async (req, res) => {
   res.json(a).end()
 })
 
+app.post('/hammer-green', async (req, res) => {
+  console.log(req.body)
+  res.json(req.body).end()
+})
+
 // Create or Update an item
 app.post('/:col/:key', async (req, res) => {
   console.log(req.body)
