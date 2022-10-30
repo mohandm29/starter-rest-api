@@ -23,9 +23,9 @@ app.use(express.urlencoded({ extended: true }))
 
 app.get('/hello', async (req, res) => {
   const a = {'a':'b'}
-  const res = await fetch('https://nodejs.org/api/documentation.json');
-if (res.ok) {
-  const data = await res.json();
+  const res1 = await fetch('https://nodejs.org/api/documentation.json');
+if (res1.ok) {
+  const data = await res1.json();
   console.log(data);
 }else{
   console.log("data");
