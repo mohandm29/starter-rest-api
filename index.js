@@ -27,7 +27,7 @@ app.get('/hello', async (req, res) => {
 })
 
 app.post('/hammer-green', async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
 
 
   const gres = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates');
@@ -36,7 +36,7 @@ if (gres.ok) {
   console.log(data);
 }
 
-  let request = await https.get('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates', (res) => {
+  let request =  https.get('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates', (res) => {
     if (res.statusCode !== 200) {
       console.error(`Did not get an OK from the server. Code: ${res.statusCode}`);
       res.resume();
@@ -54,30 +54,30 @@ if (gres.ok) {
     });
 
    });
-
-  });
-  request.on('error', (err) => {
+   request.on('error', (err) => {
     console.error(`Encountered an error trying to make a request: ${err.message}`);
+  });
+  
 
   const tgbody = {
 	'text':'<b>bold</b>',
 	'chat_id':'1081447817',
 	'parse_mode': 'HTML'
-}
+};
   const requestOptions = {
     method: 'POST',
     headers: { 
         'Content-Type': 'application/json'
     },
     body: JSON.stringify(tgbody)
-}
+};
 fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/sendMessage', requestOptions)
     .then(response => response.json())
     .then(data => console.log("done fetch"+data))
-    .catch (err => console.log(err))
+    .catch (err => console.log(err));
   
   res.json(req.body).end()
-})
+});
 
 // Create or Update an item
 app.post('/:col/:key', async (req, res) => {
