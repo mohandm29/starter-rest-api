@@ -26,10 +26,21 @@ app.get('/hello', async (req, res) => {
   const res1 = await fetch('https://nodejs.org/api/documentation.json');
 if (res1.ok) {
   const data = await res1.json();
+  console.log("response from node fetch");
   console.log(data);
 }else{
-  console.log("data");
+  console.log("error data");
 }
+
+const res2 = await fetch('https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI/getUpdates');
+if (res1.ok) {
+  const data = await res1.json();
+  console.log("response from telegram fetch");
+  console.log(data);
+}else{
+  console.log(" error t data");
+}
+
   res.json(a).end()
 })
 
