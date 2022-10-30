@@ -24,6 +24,8 @@ app.use(express.urlencoded({ extended: true }))
 const botURL = 'https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI';
 const chatId = '1081447817';
 
+const dbData = {'shooting' : [], 'hammer': []};  
+
 app.post('/hammer-green', async (req, res) => {
 
   const scanData = req.body;
@@ -33,9 +35,9 @@ app.post('/hammer-green', async (req, res) => {
   var stockArray = scanData.stocks.split(",");
   if(stockArray && stockArray.length > 0 ){
     var scanName = scanData.scan_name;
-    var testMessage  = "<b>"+scanName+"</b>\n";
-  
-    let inDB = await db.collection('coffee-nightingale-gownCyclicDB').get("hammer");
+    var msgHeader  = "<b>"+scanName+"</b>\n";
+    var testMessage = "";
+    var inDB  = dbData.hammer;
     console.log(inDB);
     for (const item of stockArray) {
       if(inDB.indexOf(item) != -1) {
@@ -43,25 +45,28 @@ app.post('/hammer-green', async (req, res) => {
         inDB.push(item);
       }
     }
-    await db.collection('coffee-nightingale-gownCyclicDB').set("hammer",inDB);
-    const tgbody = {
-      'text':testMessage,
-      'chat_id':chatId,
-      'parse_mode': 'HTML'
-    }
-    console.log(testMessage);
-    const response = await fetch(botURL+'/sendMessage', {
-      method: 'post',
-      body: JSON.stringify(tgbody),
-      headers: {'Content-Type': 'application/json'}
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log("response from telegram send");
-      console.log(data);
-    } else {
-      console.log(" error send data"+response.error);
-    }
+  
+    if(testMessage.length > 0) {
+      const tgbody = {
+        'text':testMessage,
+        'chat_id':chatId,
+        'parse_mode': 'HTML'
+      }
+      console.log(testMessage);
+      const response = await fetch(botURL+'/sendMessage', {
+        method: 'post',
+        body: JSON.stringify(tgbody),
+        headers: {'Content-Type': 'application/json'}
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("response from telegram send");
+        console.log(data);
+      } else {
+        console.log(" error send data"+response.error);
+      }
+      dbData.hammer = inDB;
+    } 
   }
   res.end();
 })
