@@ -35,7 +35,7 @@ if (res2.ok) {
 }else{
   console.log(" error t data");
 }
-var stockArray = scanData.stocks;
+var stockArray = scanData.stocks.split(",");
 var scanName = scanData.scan_name;
 var testMessage  = "<b>Scan :"+scanName+"</b></br>";
 console.log(stockArray);
@@ -43,7 +43,7 @@ console.log(scanName);
 
 
 testMessage.concat("<ul>");
-stockArray.array.forEach(element => {
+stockArray.forEach(element => {
   testMessage.concat("<li>").concat(element).concat("</li>");
 });
 testMessage.concat("</ul>");
