@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: true }))
 // app.use(express.static('public', options))
 // #############################################################################
 
+app.get('/hello', async (req, res) => {
+  const a = {'a':'b'}
+  res.json(a).end()
+})
+
 // Create or Update an item
 app.post('/:col/:key', async (req, res) => {
   console.log(req.body)
