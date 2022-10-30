@@ -23,23 +23,23 @@ app.use(express.urlencoded({ extended: true }))
 
 const botURL = 'https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI';
 //Mohan
-// const chatId = '1081447817'; 
+const mohan_chatId = '1081447817'; 
 //Vinay
-//const chatId = '841550544';
+const vinay_chatId = '841550544';
 //group  = -763158766
 const chatId = process.env.chatId;
 const dbData = {'shooting' : [], 'hammer': []};  
 
-app.post('/hammer-green', async (req, res) => {
+app.post('/hammer', async (req, res) => {
 
   const scanData = req.body;
 
-  var update = await getUpdate();
+ //var update = await getUpdate();
 
   var stockArray = scanData.stocks.split(",");
   if(stockArray && stockArray.length > 0 ){
     var scanName = scanData.scan_name;
-    var msgHeader  = "<b>"+scanName+"</b>\n";
+    var msgHeader  = "<b>"+scanName+"</b>\n -------------- \n";
     var testMessage = "";
     var inDB  = dbData.hammer;
     for (const item of stockArray) {
@@ -50,30 +50,66 @@ app.post('/hammer-green', async (req, res) => {
     }
   
     if(testMessage.length > 0) {
-      const tgbody = {
-        'text':msgHeader+testMessage,
-        'chat_id':chatId,
-        'parse_mode': 'HTML'
-      }
       console.log(testMessage);
-      const response = await fetch(botURL+'/sendMessage', {
-        method: 'post',
-        body: JSON.stringify(tgbody),
-        headers: {'Content-Type': 'application/json'}
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log("response from telegram send");
-        console.log(data);
-      } else {
-        console.log(" error send data"+response.error);
-      }
-      dbData.hammer = inDB;
+     await sendMessage(mohan_chatId, msgHeader+testMessage);
+     await sendMessage(vinay_chatId, msgHeader+testMessage);
+     dbData.hammer = inDB;
     } 
   }
   res.end();
 })
 
+app.post('/shootingstar', async (req, res) => {
+
+  const scanData = req.body;
+
+ //var update = await getUpdate();
+
+  var stockArray = scanData.stocks.split(",");
+  if(stockArray && stockArray.length > 0 ){
+    var scanName = scanData.scan_name;
+    var msgHeader  = "<b>"+scanName+"</b>\n -------------- \n";
+    var testMessage = "";
+    var inDB  = dbData.shooting;
+    for (const item of stockArray) {
+      if(inDB.indexOf(item) === -1) {
+        testMessage += item+"\n";
+        inDB.push(item);
+      }
+    }
+  
+    if(testMessage.length > 0) {
+      console.log(testMessage);
+     await sendMessage(mohan_chatId, msgHeader+testMessage);
+     await sendMessage(vinay_chatId, msgHeader+testMessage);
+     dbData.shooting = inDB;
+    } 
+  }
+  res.end();
+})
+
+async function sendMessage(chat_id,text) {
+  let tgbody = {
+    'text':text,
+    'chat_id':chat_id,
+    'parse_mode': 'HTML'
+  }
+  
+  const response = await fetch(botURL+'/sendMessage', {
+    method: 'post',
+    body: JSON.stringify(tgbody),
+    headers: {'Content-Type': 'application/json'}
+  });
+  if (response.ok) {
+    const data = await response.json();
+    console.log("response from telegram send");
+    console.log(data);
+    return data;
+  } else {
+    console.log(" error send data"+response.error);
+  }
+
+}
 async function getUpdate() {
   const res2 = await fetch(botURL+'/getUpdates');
     if (res2.ok) {
@@ -85,36 +121,6 @@ async function getUpdate() {
       console.log(" error t data");
     }
 }
-
-// Create or Update an item
-app.post('/:col/:key', async (req, res) => {
-  console.log(req.body)
-
-  const col = req.params.col
-  const key = req.params.key
-  console.log(`from collection: ${col} delete key: ${key} with params ${JSON.stringify(req.params)}`)
-  const item = await db.collection(col).set(key, req.body)
-  console.log(JSON.stringify(item, null, 2))
-  res.json(item).end()
-})
-
-
-// Get a single item
-app.get('/:col/:key', async (req, res) => {
-  const col = req.params.col
-  const key = req.params.key
-  console.log(`from collection: ${col} get key: ${key} with params ${JSON.stringify(req.params)}`)
-  const item = await db.collection(col).get(key)
-  console.log(JSON.stringify(item, null, 2))
-  res.json(item).end()
-})
-
-// Get a full listing
-app.get('/createDb', async (req, res) => {
-  const items = await db.collection("coffee-nightingale-gownCyclicDB")
-  console.log(JSON.stringify(items, null, 2))
-  res.json(items).end()
-})
 
 // Catch all handler for all other request.
 app.use('*', (req, res) => {
