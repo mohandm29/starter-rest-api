@@ -72,10 +72,10 @@ async function getUpdate() {
       const data = await res2.json();
       console.log("response from telegram fetch");
       console.log(data);
+      return data;
     }else{
       console.log(" error t data");
     }
-    return data;
 }
 
 // Create or Update an item
@@ -103,7 +103,7 @@ app.get('/:col/:key', async (req, res) => {
 
 // Get a full listing
 app.get('/createDb', async (req, res) => {
-  const items = await db.collection("coffee-nightingale-gownCyclicDB").set("hammer",[])
+  const items = await db.collection("coffee-nightingale-gownCyclicDB")
   console.log(JSON.stringify(items, null, 2))
   res.json(items).end()
 })
