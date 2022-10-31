@@ -102,10 +102,20 @@ app.get('/cleardata', async (req, res) => {
 })
 
 app.get('/processrg', async (req, res) => {
-  var preopen = await nseFetch('market-data-pre-open?key=FO');
+
+  const res2 = await fetch(nseUrl+suffix);
+  if (res2.ok) {
+    const data = await res2.json();
+    console.log(data);
+    console.log("response from nse fetch");
+    return data;
+  }else{
+    console.log(" error to get nse data");
+  }
+  //var preopen = await nseFetch('market-data-pre-open?key=FO');
   //var lastDay = await nseFetch('equity-stockIndices?index=SECURITIES IN F&O');
 
-  console.log(preopen);
+ // console.log(preopen);
   //console.log(lastDay);
   res.end();
 })
