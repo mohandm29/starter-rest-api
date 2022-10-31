@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const db = require('cyclic-dynamodb')
 const fetch = require('node-fetch');
+const array = require('lodash/array');
+const object = require('lodash/fp/object');
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -20,6 +22,7 @@ app.use(express.urlencoded({ extended: true }))
 // app.use(express.static('public', options))
 // #############################################################################
 
+const nseUrl = 'https://www.nseindia.com/api/';
 const botURL = 'https://api.telegram.org/bot5296606623:AAE_o1f38coNlUG8k2TnENZfCSZ67WlraOI';
 //Mohan
 const mohan_chatId = '1081447817'; 
@@ -98,6 +101,11 @@ app.get('/cleardata', async (req, res) => {
   res.end();
 })
 
+app.get('/processrg', async (req, res) => {
+  await findRG();
+  res.end();
+})
+
 async function sendMessage(chat_id,text) {
   let tgbody = {
     'text':text,
@@ -130,6 +138,26 @@ async function getUpdate() {
     }else{
       console.log(" error t data");
     }
+}
+
+async function findRG() {
+
+  var preopen = await nseFetch('market-data-pre-open?key=FO');
+  var lastDay = await nseFetch('equity-stockIndices?index=SECURITIES IN F&O');
+
+  console.log(preopen);
+  console.log(lastDay);
+}
+
+async function nseFetch(suffix) {
+  const res2 = await fetch(nseUrl+suffix);
+  if (res2.ok) {
+    const data = await res2.json();
+    console.log("response from nse fetch");
+    return data;
+  }else{
+    console.log(" error to get nse data");
+  }
 }
 
 // Catch all handler for all other request.
