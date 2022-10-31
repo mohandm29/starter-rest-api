@@ -102,7 +102,7 @@ app.get('/cleardata', async (req, res) => {
 })
 
 app.get('/processrg', async (req, res) => {
-  await findRG();
+  findRG();
   res.end();
 })
 
@@ -147,6 +147,7 @@ async function findRG() {
 
   console.log(preopen);
   console.log(lastDay);
+  return;
 }
 
 async function nseFetch(suffix) {
