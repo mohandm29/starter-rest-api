@@ -103,7 +103,7 @@ app.get('/cleardata', async (req, res) => {
 
 app.get('/processrg', async (req, res) => {
 
-  const res2 = await fetch(nseUrl+suffix);
+  const res2 = await fetch(nseUrl+'market-data-pre-open?key=FO');
   if (res2.ok) {
     const data = await res2.json();
     console.log(data);
