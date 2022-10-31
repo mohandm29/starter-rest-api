@@ -103,10 +103,10 @@ app.get('/cleardata', async (req, res) => {
 
 app.get('/processrg', async (req, res) => {
   var preopen = await nseFetch('market-data-pre-open?key=FO');
-  var lastDay = await nseFetch('equity-stockIndices?index=SECURITIES IN F&O');
+  //var lastDay = await nseFetch('equity-stockIndices?index=SECURITIES IN F&O');
 
   console.log(preopen);
-  console.log(lastDay);
+  //console.log(lastDay);
   res.end();
 })
 
