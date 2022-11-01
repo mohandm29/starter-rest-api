@@ -106,11 +106,13 @@ app.get('/processrg', async (req, res) => {
 
       const response = await fetch('https://www.nseindia.com');
     //const body = await response.text();
+    console.log(response);
+    console.log(await response.headers);
     console.log(response.headers.raw());
     console.log(response.headers.raw()['set-cookie']);
 
 
-    console.log(body);
+    //console.log(body);
 
 //   const cookiereq = await fetch(nseUrl, { method: 'GET',
 //   credentials: 'include'
