@@ -104,8 +104,11 @@ app.get('/cleardata', async (req, res) => {
 app.get('/processrg', async (req, res) => {
 
 
-      const response = await fetch('https://github.com/');
-    const body = await response.text();
+      const response = await fetch('https://www.nseindia.com');
+    //const body = await response.text();
+    console.log(response.headers.raw());
+    console.log(response.headers.raw()['set-cookie']);
+
 
     console.log(body);
 
