@@ -103,14 +103,14 @@ app.get('/cleardata', async (req, res) => {
 
 app.get('/processrg', async (req, res) => {
 
-  const cookiereq = await fetch(nseUrl+'market-data-pre-open?key=FO', { method: 'GET',
+  const cookiereq = await fetch(nseUrl, { method: 'GET',
   credentials: 'include'
-});
-  const res2 = await fetch(nseUrl+'market-data-pre-open?key=FO',{  method: 'GET',
-  credentials: 'include'
-});
-  if (res2.ok) {
-    const data = await res2.json();
+    });
+//   const res2 = await fetch(nseUrl+'market-data-pre-open?key=FO',{  method: 'GET',
+//   credentials: 'include'
+// });
+  if (cookiereq.ok) {
+    const data = await cookiereq.body;
     console.log(data);
     console.log("response from nse fetch");
     return data;
