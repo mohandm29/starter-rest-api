@@ -103,20 +103,26 @@ app.get('/cleardata', async (req, res) => {
 
 app.get('/processrg', async (req, res) => {
 
-  const cookiereq = await fetch(nseUrl, { method: 'GET',
-  credentials: 'include'
-    });
-//   const res2 = await fetch(nseUrl+'market-data-pre-open?key=FO',{  method: 'GET',
+
+      const response = await fetch('https://github.com/');
+    const body = await response.text();
+
+    console.log(body);
+
+//   const cookiereq = await fetch(nseUrl, { method: 'GET',
 //   credentials: 'include'
-// });
-  if (cookiereq.ok) {
-    const data = await cookiereq.body;
-    console.log(data);
-    console.log("response from nse fetch");
-    return data;
-  }else{
-    console.log(" error to get nse data");
-  }
+//     });
+// //   const res2 = await fetch(nseUrl+'market-data-pre-open?key=FO',{  method: 'GET',
+// //   credentials: 'include'
+// // });
+//   if (cookiereq.ok) {
+//     const data = await cookiereq.body;
+//     console.log(data);
+//     console.log("response from nse fetch");
+//     return data;
+//   }else{
+//     console.log(" error to get nse data");
+//   }
   //var preopen = await nseFetch('market-data-pre-open?key=FO');
   //var lastDay = await nseFetch('equity-stockIndices?index=SECURITIES IN F&O');
 
