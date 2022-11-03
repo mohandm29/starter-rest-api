@@ -111,8 +111,8 @@ app.get('/processrg', async (req, res) => {
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'accept-language': 'en-US,en;q=0.9',
     'cache-control': 'no-cache',
-    //'cookie': 'RT="z=1&dm=nseindia.com&si=d8b5b0d2-c9f0-4da8-b4e6-89390de0c451&ss=l9y74brc&sl=4&tt=8z8&bcn=%2F%2F684d0d44.akstat.io%2F&ul=12mox"',
-    'cookie': '',
+    'cookie': 'RT="z=1&dm=nseindia.com&si=d8b5b0d2-c9f0-4da8-b4e6-89390de0c451&ss=l9y74brc&sl=4&tt=8z8&bcn=%2F%2F684d0d44.akstat.io%2F&ul=12mox"',
+    //'cookie': '',
     'pragma': 'no-cache',
     'sec-ch-ua': '"Chromium";v="106", "Google Chrome";v="106", "Not;A=Brand";v="99"',
     'sec-ch-ua-mobile': '?0',
@@ -131,37 +131,37 @@ app.get('/processrg', async (req, res) => {
 
   let preopen = {};
   //TODO 
-  //const data = preOpenJson;
- const response =  await fetch("https://www.nseindia.com/api/market-data-pre-open?key=FO", requestOptions);
- if (response.ok) {
-  const data = await response.json();
-  data.data.forEach(element => {
-    preopen[element.metadata.symbol] = element.metadata.lastPrice;
-    console.log(element.metadata.symbol + element.metadata.lastPrice)
+ 
+ //const response =  await fetch("https://www.nseindia.com/api/market-data-pre-open?key=FO", requestOptions);
+ if (true) {
+ // const data = await response.json();
+ const data = preOpenJson;
+ data.data.forEach(element => {
+    preopen[element.metadata.symbol] = element.metadata;
   });
 
   marketdata.data.forEach(md => {
-    const lasthigh = md.dayHigh;
-    const lastlow = md.dayLow;
-    const lastclose = md.lastPrice;
-    const lastopen = md.open;
-    const latestOpen = preopen[md.symbol];
+    const lasthigh = Number(md.dayHigh);
+    const lastlow = Number(md.dayLow);
+    const lastopen = Number(md.open);
+    const prevClose = Number(preopen[md.symbol].previousClose);
+    const open = Number(preopen[md.symbol].iep);
     // case 1 previous Red candle 
-    if(lastopen > lastclose) { 
-        if(latestOpen >= lasthigh) {
-          array.concat(rgdata.buy_above_high,md.symbol);
-          console.log('found');
-        } else if(lastclose < lastopen < lasthigh) {
-          array.concat(rgdata.buy_within_high,md.symbol);
-          console.log('found');
+    if(lastopen > prevClose) { 
+        if(open >= lasthigh) {
+          rgdata.buy_above_high = array.concat(rgdata.buy_above_high,md.symbol);
+         console.log('above high '+md.symbol);
+        } else if((lastopen < open)  && (open< lasthigh)) {
+          rgdata.buy_within_high = array.concat(rgdata.buy_within_high,md.symbol);
+         console.log('within high '+md.symbol);
         }
-    } else if (lastopen < lastclose) {
-      if(latestOpen <= lastlow) {
-        array.concat(rgdata.sell_below_low,md.symbol);  
-        console.log('found');
-      } else if(lastlow < lastopen < lastclose) {
-        array.concat(rgdata.sell_within_low,md.symbol);  
-        console.log('found');
+    } else if (lastopen < prevClose) {
+      if(open <= lastlow) {
+        rgdata.sell_below_low = array.concat(rgdata.sell_below_low,md.symbol);  
+        console.log('below low '+md.symbol);
+      } else if((lastlow < open) &&  (open < lastopen)) {
+        rgdata.sell_within_low=  array.concat(rgdata.sell_within_low,md.symbol);  
+       console.log('within low '+md.symbol);
       }
     }
   });
