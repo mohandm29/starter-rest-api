@@ -168,6 +168,14 @@ app.get('/processrg', async (req, res) => {
 } else {
   console.log(" error send data"+response.error);
 }
+
+var buyaboveh  = " * <b>BUY - RG Open Above High \n --------------- \n</b>"+rgdata.buy_above_high.join("\n");
+var sellbelowL  = "\n\n * <b>SELL - RG Open Below Low \n ---------------\n</b>"+rgdata.sell_below_low.join("\n");
+var buywithinh  = "\n\n * <b>BUY - RG Open within High \n ---------------\n</b>"+rgdata.buy_within_high.join("\n");
+var sellwithinL  = "\n\n * <b>SELL - RG Within Low \n --------------\n</b>"+rgdata.sell_within_low.join("\n");
+
+  await sendMessage(mohan_chatId, buyaboveh+sellbelowL+buywithinh+sellwithinL);
+  await sendMessage(vinay_chatId, buyaboveh+sellbelowL+buywithinh+sellwithinL);
   res.json(rgdata).end();
 })
 
@@ -203,16 +211,6 @@ async function getUpdate() {
     }else{
       console.log(" error t data");
     }
-}
-
-async function findRG() {
-
-  var preopen = await nseFetch('market-data-pre-open?key=FO');
-  var lastDay = await nseFetch('equity-stockIndices?index=SECURITIES IN F&O');
-
-  console.log(preopen);
-  console.log(lastDay);
-  return "done";
 }
 
 async function nseFetch(suffix) {
