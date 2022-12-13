@@ -134,8 +134,8 @@ app.get('/processrg', async (req, res) => {
   const response =  await fetch("https://www.nseindia.com", requestOptions);
 requestOptions.cookie = response.headers.cookie;
 
- const response1 =  await fetch("https://www.nseindia.com/api/market-data-pre-open?key=FO", requestOptions);
- console.log(response1);
+ //const response1 =  await fetch("https://www.nseindia.com/api/market-data-pre-open?key=FO", requestOptions);
+ console.log(response);
  if (true) {
  // const data = await response.json();
  const data = preOpenJson;
@@ -182,8 +182,8 @@ var sellbelowL  = "\n\n * <b>SELL - RG Open Below Low \n ---------------\n</b>"+
 var buywithinh  = "\n\n * <b>BUY - RG Open within High \n ---------------\n</b>"+rgdata.buy_within_high.join(",");
 var sellwithinL  = "\n\n * <b>SELL - RG Within Low \n --------------\n</b>"+rgdata.sell_within_low.join(",");
 
-  await sendMessage(mohan_chatId, buyaboveh+sellbelowL+buywithinh+sellwithinL);
-  await sendMessage(vinay_chatId, buyaboveh+sellbelowL+buywithinh+sellwithinL);
+  //await sendMessage(mohan_chatId, buyaboveh+sellbelowL+buywithinh+sellwithinL);
+  //await sendMessage(vinay_chatId, buyaboveh+sellbelowL+buywithinh+sellwithinL);
   res.json(rgdata).end();
 })
 
