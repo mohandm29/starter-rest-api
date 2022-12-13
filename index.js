@@ -131,8 +131,11 @@ app.get('/processrg', async (req, res) => {
 
   let preopen = {};
   //TODO 
- 
- //const response =  await fetch("https://www.nseindia.com/api/market-data-pre-open?key=FO", requestOptions);
+  const response =  await fetch("https://www.nseindia.com", requestOptions);
+requestOptions.cookie = response.headers.cookie;
+
+ const response1 =  await fetch("https://www.nseindia.com/api/market-data-pre-open?key=FO", requestOptions);
+ console.log(response1);
  if (true) {
  // const data = await response.json();
  const data = preOpenJson;
