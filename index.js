@@ -141,6 +141,8 @@ app.get('/processrg', async (req, res) => {
   });
 
   marketdata.data.forEach(md => {
+    try {
+      
     const lasthigh = Number(md.dayHigh);
     const lastlow = Number(md.dayLow);
     const lastopen = Number(md.open);
@@ -164,15 +166,18 @@ app.get('/processrg', async (req, res) => {
        console.log('within low '+md.symbol);
       }
     }
+    } catch (error) {
+      console.log(error);
+    }
   });
 } else {
   console.log(" error send data"+response.error);
 }
 
-var buyaboveh  = " * <b>BUY - RG Open Above High \n --------------- \n</b>"+rgdata.buy_above_high.join("\n");
-var sellbelowL  = "\n\n * <b>SELL - RG Open Below Low \n ---------------\n</b>"+rgdata.sell_below_low.join("\n");
-var buywithinh  = "\n\n * <b>BUY - RG Open within High \n ---------------\n</b>"+rgdata.buy_within_high.join("\n");
-var sellwithinL  = "\n\n * <b>SELL - RG Within Low \n --------------\n</b>"+rgdata.sell_within_low.join("\n");
+var buyaboveh  = " * <b>BUY - RG Open Above High \n --------------- \n</b>"+rgdata.buy_above_high.join(",");
+var sellbelowL  = "\n\n * <b>SELL - RG Open Below Low \n ---------------\n</b>"+rgdata.sell_below_low.join(",");
+var buywithinh  = "\n\n * <b>BUY - RG Open within High \n ---------------\n</b>"+rgdata.buy_within_high.join(",");
+var sellwithinL  = "\n\n * <b>SELL - RG Within Low \n --------------\n</b>"+rgdata.sell_within_low.join(",");
 
   await sendMessage(mohan_chatId, buyaboveh+sellbelowL+buywithinh+sellwithinL);
   await sendMessage(vinay_chatId, buyaboveh+sellbelowL+buywithinh+sellwithinL);
